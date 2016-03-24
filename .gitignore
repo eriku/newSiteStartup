@@ -1,0 +1,31 @@
+# Ignore all Sass cache stuff
+.sass-cache/
+*.scssc
+*.sassc
+
+# Dependency directories
+node_modules
+jspm_packages
+
+# nodeJS & glumpJS
+.npm
+*.node
+components
+coverage
+
+# For any Codekit Config stragglers out there
+config.codekit
+
+# Don't include development helper files
+*.css.map
+*.js.map
+sassdoc
+phpdocs
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# OS X stuff
+.DS_Store

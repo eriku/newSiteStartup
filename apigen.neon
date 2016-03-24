@@ -1,0 +1,7 @@
+title: PHP Documentation
+source: ./
+destination: phpdocs
+templateTheme: bootstrap
+todo: true
+internal: true
+deprecated: true
