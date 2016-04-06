@@ -26,12 +26,14 @@
   // sass
   var sassDevOptions = {
     errLogToConsole: true,
-    outputStyle: 'expanded'
+    outputStyle: 'expanded',
+    includePaths: require('node-bourbon').includePaths
   };
 
   // SASS | Production
   var sassProdOptions = {
-    outputStyle: 'compressed'
+    outputStyle: 'compressed',
+    includePaths: require('node-bourbon')
   };
 
   // autoprefixer
