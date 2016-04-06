@@ -2,9 +2,9 @@
   "name": "new_website_startup",
   "description": "Used to start a new web project using gulp",
   "version": "0.0.1",
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/eriku/newSiteStartup.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eriku/newSiteStartup.git"
   },
   "main": "gulpfile.js",
   "scripts": {
@@ -20,6 +20,7 @@
     "gulp-sass": "^2.2.0",
     "gulp-sass-glob": "^1.0.5",
     "gulp-sourcemaps": "^1.6.0",
+    "node-bourbon": "^4.2.8",
     "sassdoc": "^2.1.20"
   }
 }
