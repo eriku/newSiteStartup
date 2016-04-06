@@ -3,21 +3,21 @@
 
   // -- Utilities
   var gulp    = require('gulp');
-  var plumber = require('gulp-plumber');
   var notify  = require('gulp-notify');
+  var plumber = require('gulp-plumber');
 
   // -- SASS/CSS
-  var sass          = require('gulp-sass');
-  var sourcemaps    = require('gulp-sourcemaps');
-  var cssnano       = require('gulp-cssnano');
-  var sassGlob      = require('gulp-sass-glob');
   var autoprefixer  = require('gulp-autoprefixer');
+  var bourbon       = require('node-bourbon');
+  var sass          = require('gulp-sass');
   var sassdoc       = require('sassdoc');
+  var sassGlob      = require('gulp-sass-glob');
+  var sourcemaps    = require('gulp-sourcemaps');
 
   // -- Paths
   var basePath = 'public_html/';
-  var sassPath = basePath + 'scss/{,*/}*.scss';
   var cssPath  = basePath + 'css';
+  var sassPath = basePath + 'scss/{,*/}*.scss';
 
   // --------------------------------------------------------------------------
   //  Settings
@@ -27,13 +27,13 @@
   var sassDevOptions = {
     errLogToConsole: true,
     outputStyle: 'expanded',
-    includePaths: require('node-bourbon').includePaths
+    includePaths: bourbon.includePaths
   };
 
   // SASS | Production
   var sassProdOptions = {
     outputStyle: 'compressed',
-    includePaths: require('node-bourbon').includePaths
+    includePaths: bourbon.includePaths
   };
 
   // autoprefixer
@@ -76,8 +76,8 @@
       }))
       .pipe(sassGlob())
       .pipe(sass(sassDevOptions).on('error', sass.logError))
-      .pipe(sourcemaps.write())
       .pipe(autoprefixer(autoprefixerOptions))
+      .pipe(sourcemaps.write('/'))
       .pipe(gulp.dest(cssPath))
       .pipe(notify({
            title: 'Gulp',
@@ -106,7 +106,7 @@
   // --------------------------------------------------------------------------
   //  gulp default
   // --------------------------------------------------------------------------
-  gulp.task('default', ['styles', 'watch']);
+  gulp.task('default', ['watch']);
 
 
   // --------------------------------------------------------------------------
@@ -117,7 +117,6 @@
       .src(sassPath)
       .pipe(sass(sassProdOptions))
       .pipe(autoprefixer(autoprefixerOptions))
-      .pipe(cssnano())
       .pipe(gulp.dest(cssPath));
   });
 
