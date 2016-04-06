@@ -33,7 +33,7 @@
   // SASS | Production
   var sassProdOptions = {
     outputStyle: 'compressed',
-    includePaths: require('node-bourbon')
+    includePaths: require('node-bourbon').includePaths
   };
 
   // autoprefixer
