@@ -10,28 +10,22 @@
   var autoprefixer  = require('gulp-autoprefixer');
   var bourbon       = require('node-bourbon');
   var sass          = require('gulp-sass');
-  var sassdoc       = require('sassdoc');
   var sassGlob      = require('gulp-sass-glob');
   var sourcemaps    = require('gulp-sourcemaps');
 
   // -- Paths
-  var basePath = 'public_html/';
-  var cssPath  = basePath + 'css';
-  var sassPath = basePath + 'scss/{,*/}*.scss';
+  var basePath  = 'public_html/views/site/';
+  var cssPath   = basePath + 'css';
+  var imagePath = basePath + '/images/**/*.{jpg,png}';
+  var sassPath  = basePath + 'scss/{,*/}*.scss';
 
   // --------------------------------------------------------------------------
   //  Settings
   // --------------------------------------------------------------------------
 
   // sass
-  var sassDevOptions = {
+  var sassOptions = {
     errLogToConsole: true,
-    outputStyle: 'expanded',
-    includePaths: bourbon.includePaths
-  };
-
-  // SASS | Production
-  var sassProdOptions = {
     outputStyle: 'compressed',
     includePaths: bourbon.includePaths
   };
@@ -41,41 +35,21 @@
     browsers: ['last 5 versions']
   };
 
-  // sassDoc
-  var sassDocOptions = {
-    dest: 'sassdoc',
-    exclude: basePath + 'scss/vendors/*',
-    autofill: 'content'
-  };
-
-
   // --------------------------------------------------------------------------
-  //  gulp sassdoc
-  // --------------------------------------------------------------------------
-
-  gulp.task('sassdoc', function () {
-    return gulp
-      .src(sassPath)
-      .pipe(sassdoc(sassDocOptions))
-      .resume();
-  });
-
-
-  // --------------------------------------------------------------------------
-  //  gulp styles
+  //  Gulp Task : Styles
   // --------------------------------------------------------------------------
   gulp.task('styles', function() {
     return gulp
       .src(sassPath)
       .pipe(sourcemaps.init())
+      .pipe(sassGlob())
       .pipe(plumber({
         errorHandler: notify.onError({
           title: 'Gulp',
           message: '<%= error.message %>',
         })
       }))
-      .pipe(sassGlob())
-      .pipe(sass(sassDevOptions).on('error', sass.logError))
+      .pipe(sass(sassOptions).on('error', sass.logError))
       .pipe(autoprefixer(autoprefixerOptions))
       .pipe(sourcemaps.write('/'))
       .pipe(gulp.dest(cssPath))
@@ -86,11 +60,23 @@
       .resume();
   });
 
+  // --------------------------------------------------------------------------
+  //  Gulp Task : Smushit
+  // --------------------------------------------------------------------------
+  gulp.task('smushit', function(){
+    return gulp
+      .src(imagePath)
+      .pipe(smushit({
+        verbose: true
+      }))
+      .pipe(gulp.dest(basePath + '/images/'));
+  });
 
   // --------------------------------------------------------------------------
-  //  gulp watch
+  //  Gulp Task : Watch
   // --------------------------------------------------------------------------
   gulp.task('watch', function() {
+    console.log('Use "control + c" to quit');
     return gulp
       // Watch the scss folder for change,
       // and run `styles` task when something happens
@@ -104,20 +90,8 @@
 
 
   // --------------------------------------------------------------------------
-  //  gulp default
+  //  Gulp Task : Default
   // --------------------------------------------------------------------------
   gulp.task('default', ['watch']);
-
-
-  // --------------------------------------------------------------------------
-  //  gulp prod (production)
-  // --------------------------------------------------------------------------
-  gulp.task('prod', function () {
-    return gulp
-      .src(sassPath)
-      .pipe(sass(sassProdOptions))
-      .pipe(autoprefixer(autoprefixerOptions))
-      .pipe(gulp.dest(cssPath));
-  });
 
 }());
